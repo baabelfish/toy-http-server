@@ -7,10 +7,15 @@ Server::Server(std::size_t port):
 
 Server::~Server() {}
 
+void Server::connect(std::string path, RestFunction&& f) { add("CONNECT" + path, std::forward<RestFunction>(f)); }
 void Server::get(std::string path, RestFunction&& f) { add("GET" + path, std::forward<RestFunction>(f)); }
+void Server::head(std::string path, RestFunction&& f) { add("HEAD" + path, std::forward<RestFunction>(f)); }
+void Server::options(std::string path, RestFunction&& f) { add("OPTIONS" + path, std::forward<RestFunction>(f)); }
+void Server::patch(std::string path, RestFunction&& f) { add("PATCH" + path, std::forward<RestFunction>(f)); }
 void Server::post(std::string path, RestFunction&& f) { add("POST" + path, std::forward<RestFunction>(f)); }
 void Server::put(std::string path, RestFunction&& f) { add("PUT" + path, std::forward<RestFunction>(f)); }
 void Server::remove(std::string path, RestFunction&& f) { add("DELETE" + path, std::forward<RestFunction>(f)); }
+void Server::trace(std::string path, RestFunction&& f) { add("TRACE" + path, std::forward<RestFunction>(f)); }
 void Server::custom(std::string type, std::string path, RestFunction&& f) { add(type + path, std::forward<RestFunction>(f)); }
 
 void Server::exec() {
@@ -26,7 +31,7 @@ void Server::exec() {
     while (true) {
         zmq::Frame frame = m_socket.receive();
         Request req(frame);
-        req.debug();
+        // req.debug();
         auto start = std::chrono::steady_clock::now();
         auto res = run(req);
         auto stop = (std::chrono::steady_clock::now() - start).count();

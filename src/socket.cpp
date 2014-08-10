@@ -1,12 +1,14 @@
 #include "socket.hpp"
+#include <thread>
 
 namespace zmq {
 
 socket::socket(std::size_t port):
    m_context(zmq_ctx_new()),
    m_socket(zmq_socket(m_context, ZMQ_STREAM)),
-   m_address("tcp://0.0.0.0:" + std::to_string(port)),
+   m_address("tcp://127.0.0.1:" + std::to_string(port)),
    m_port(port) {
+   zmq_ctx_set(m_context, ZMQ_IO_THREADS, std::thread::hardware_concurrency());
    zmq_bind(m_socket, m_address.c_str());
 }
 

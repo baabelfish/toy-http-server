@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include "static/status.hpp"
 
 class Response {
 public:
@@ -11,11 +12,14 @@ public:
         m_headers() {
     }
 
-    Response(std::string data, int code): Response(code, data) {}
-    Response(const char* data, int code): Response(code, data) {}
+    Response(std::string data, Status code): Response(static_cast<unsigned>(code), data) {}
+    Response(const char* data, Status code): Response(static_cast<unsigned>(code), data) {}
+    Response(std::string data, unsigned code): Response(code, data) {}
+    Response(const char* data, unsigned code): Response(code, data) {}
     Response(std::string data): Response(200, data) {}
     Response(const char* data): Response(200, data) {}
-    Response(int code): Response(code, "") {}
+    Response(Status code): Response(static_cast<unsigned>(code), "") {}
+    Response(unsigned code): Response(code, "") {}
 
     virtual ~Response() {}
 
@@ -43,7 +47,7 @@ public:
     }
 
 private:
-    int m_code;
+    unsigned m_code;
     std::string m_data;
     std::unordered_map<std::string, std::string> m_headers;
 };

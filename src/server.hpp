@@ -18,10 +18,15 @@ public:
     Server(std::size_t port);
     virtual ~Server();
 
+    void connect(std::string path, RestFunction&& f);
     void get(std::string path, RestFunction&& f);
+    void head(std::string path, RestFunction&& f);
+    void options(std::string path, RestFunction&& f);
+    void patch(std::string path, RestFunction&& f);
     void post(std::string path, RestFunction&& f);
     void put(std::string path, RestFunction&& f);
     void remove(std::string path, RestFunction&& f);
+    void trace(std::string path, RestFunction&& f);
     void custom(std::string type, std::string path, RestFunction&& f);
 
     void exec();
