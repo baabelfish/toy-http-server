@@ -1,0 +1,6 @@
+[submodule "lib/ytest"]
+	path = lib/ytest
+	url = https://github.com/baabelfish/ytest
+[submodule "lib/initor"]
+	path = lib/initor
+	url = https://github.com/baabelfish/initor
